@@ -41,7 +41,7 @@ namespace Chess
                 Square selectedSquare;
                 Rectangle selectedRectangle;
 
-                // Translate the clicked on rectangle to the right square.
+                // Translates the clicked on rectangle to the right square.
                 GetSelectedSquare(sender, out col, out row, out selectedSquare, out selectedRectangle);
 
                 Square from = CurrentlySelectedSquare;
@@ -51,14 +51,8 @@ namespace Chess
                    SelectedPiece.regularlMoves.Contains(to) &&
                    (to.Col == SelectedPiece.Square.Col + 2 || to.Col == SelectedPiece.Square.Col - 3))
                 {
-                    if(to.Col == SelectedPiece.Square.Col + 2)
-                    {
-                        (SelectedPiece as King).Castle("Short");
-                    }
-                    else
-                    {
-                        (SelectedPiece as King).Castle("Long");
-                    }
+                    if(to.Col == SelectedPiece.Square.Col + 2) (SelectedPiece as King).Castle("Short");
+                    else (SelectedPiece as King).Castle("Long");
                 }
                 // Check if the move is legal for the selected piece.
                 else if(SelectedPiece.IsMoveLeagel(from, to) == true)
@@ -66,11 +60,14 @@ namespace Chess
                     // If move is leagel move the piece to the selected square
                     //  and clear all Board flags.
                     SelectedPiece.Move(from, to);
+
                     // Switch turn to other player.
                     SwitchPlayer();
                 }
             }
         }
+
+
         public static void SwitchPlayer()
         {
             ClearBoardFlags();
@@ -96,22 +93,34 @@ namespace Chess
         }
         public static void UpdateMovesAndThreats()
         {
+            ClearThreates();
+
             for(int i = 1; i < Squares.Length; i++)
-            {
-                Square[] squareArray = Squares[i];
-
                 for(int j = 1; j < Squares[i].Length; j++)
-                {
-                    Square s = Squares[i][j];
-
-                    if(s.HasPieceOn)
+                    if(Squares[i][j].HasPieceOn) Squares[i][j].PieceOnSquare.updateLeagelMoves();
+        }
+        public static void CheckIfKingIsChecked()
+        {
+            // Scan board for the other player's king,
+            // then check if he is mated.
+            for(int i = 1; i < 9; i++)
+                for(int j = 1; j < 9; j++)
+                    if(Squares[i][j].PieceOnSquare is King &&
+                       Squares[i][j].PieceOnSquare.Color != CurrentPlayerColor)
                     {
-                        s.PieceOnSquare.updateLeagelMoves();
+                        (Squares[i][j].PieceOnSquare as King).CheckIfMated();
                     }
-                }
-            }
         }
 
+        private static void ClearThreates()
+        {
+            for(int i = 1; i < Squares.Length; i++)
+                for(int j = 1; j < Squares[i].Length; j++)
+                {
+                    Squares[i][j].ThreatenedBy.Clear();
+                    Squares[i][j].IsThreatened = false;
+                }
+        }
         private static void GetSelectedSquare(object sender, out int col, out int row, out Square selectedSquare, out Rectangle selectedRectangle)
         {
             // Get the piece image's board coordinates.

@@ -41,7 +41,7 @@ namespace Chess
                         {
                             captureMoves.Add(s);
                             s.IsThreatened = true;
-                            s.ThreatenedBy = Color;
+                            s.ThreatenedBy.Add(Square);
                         }
                         break;
                     }
@@ -64,7 +64,7 @@ namespace Chess
                         {
                             captureMoves.Add(s);
                             s.IsThreatened = true;
-                            s.ThreatenedBy = Color;
+                            s.ThreatenedBy.Add(Square);
                         }
                         break;
                     }
@@ -87,7 +87,7 @@ namespace Chess
                         {
                             captureMoves.Add(s);
                             s.IsThreatened = true;
-                            s.ThreatenedBy = Color;
+                            s.ThreatenedBy.Add(Square);
                         }
                         break;
                     }
@@ -110,7 +110,7 @@ namespace Chess
                         {
                             captureMoves.Add(s);
                             s.IsThreatened = true;
-                            s.ThreatenedBy = Color;
+                            s.ThreatenedBy.Add(Square);
                         }
                         break;
                     }

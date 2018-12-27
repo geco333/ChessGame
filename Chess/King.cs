@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
@@ -53,211 +54,25 @@ namespace Chess
             regularlMoves = new List<Square>();
             captureMoves = new List<Square>();
 
-            Square s, S;
-            int r, c, R, C;
-            r = R = Square.Row;
-            c = C = Square.Col;
-            S = Board.Squares[Square.Row][Square.Col];
+            int r = Square.Row;
+            int c = Square.Col;
 
             // Set N moves.
-            if(r > 1)
-            {
-                s = Board.Squares[--r][c];
-
-                if(s.HasPieceOn)
-                {
-                    if(s.PieceOnSquare.Color != Color)
-                    {
-                        captureMoves.Add(s);
-                    }
-                    else
-                    {
-                        s.IsThreatened = true;
-                        s.ThreatenedBy = Color;
-                    }
-                }
-                else if(!s.IsThreatened ||
-                        (s.IsThreatened && s.ThreatenedBy == Color))
-                {
-                    regularlMoves.Add(s);
-                }
-            }
-            ResetRowAndColumn(out r, out c, out s, R, C, S);
+            if(r > 1) SetMoveInDirection(r - 1, c);
             // Set NE moves.
-            if(r > 1 && c < 8)
-            {
-                s = Board.Squares[--r][++c];
-
-                if(s.HasPieceOn)
-                {
-                    if(s.PieceOnSquare.Color != Color)
-                    {
-                        captureMoves.Add(s);
-                        s.IsThreatened = true;
-                        s.ThreatenedBy = Color;
-                    }
-                    else
-                    {
-                        s.IsThreatened = true;
-                        s.ThreatenedBy = Color;
-                    }
-                }
-                else if(!s.IsThreatened || (s.IsThreatened && s.ThreatenedBy == Color))
-                {
-                    regularlMoves.Add(s);
-                }
-
-            }
-            ResetRowAndColumn(out r, out c, out s, R, C, S);
+            if(r > 1 && c < 8) SetMoveInDirection(r - 1, c + 1);
             // Set E moves.
-            if(c < 8)
-            {
-                s = Board.Squares[r][++c];
-
-                if(s.HasPieceOn)
-                {
-                    if(s.PieceOnSquare.Color != Color)
-                    {
-                        captureMoves.Add(s);
-                        s.IsThreatened = true;
-                        s.ThreatenedBy = Color;
-                    }
-                    else
-                    {
-                        s.IsThreatened = true;
-                        s.ThreatenedBy = Color;
-                    }
-                }
-                else if(!s.IsThreatened || (s.IsThreatened && s.ThreatenedBy == Color))
-                {
-                    regularlMoves.Add(s);
-                }
-            }
-            ResetRowAndColumn(out r, out c, out s, R, C, S);
+            if(c < 8) SetMoveInDirection(r, c + 1);
             // Set SE moves.
-            if(r < 8 && c < 8)
-            {
-                s = Board.Squares[++r][++c];
-
-                if(s.HasPieceOn)
-                {
-                    if(s.PieceOnSquare.Color != Color)
-                    {
-                        captureMoves.Add(s);
-                        s.IsThreatened = true;
-                        s.ThreatenedBy = Color;
-                    }
-                    else
-                    {
-                        s.IsThreatened = true;
-                        s.ThreatenedBy = Color;
-                    }
-                }
-                else if(!s.IsThreatened || (s.IsThreatened && s.ThreatenedBy == Color))
-                {
-                    regularlMoves.Add(s);
-                }
-            }
-            ResetRowAndColumn(out r, out c, out s, R, C, S);
+            if(r < 8 && c < 8) SetMoveInDirection(r + 1, c + 1);
             // Set S moves.
-            if(r < 8)
-            {
-                s = Board.Squares[++r][c];
-
-                if(s.HasPieceOn)
-                {
-                    if(s.PieceOnSquare.Color != Color)
-                    {
-                        captureMoves.Add(s);
-                        s.IsThreatened = true;
-                        s.ThreatenedBy = Color;
-                    }
-                    else
-                    {
-                        s.IsThreatened = true;
-                        s.ThreatenedBy = Color;
-                    }
-                }
-                else if(!s.IsThreatened || (s.IsThreatened && s.ThreatenedBy == Color))
-                {
-                    regularlMoves.Add(s);
-                }
-            }
-            ResetRowAndColumn(out r, out c, out s, R, C, S);
+            if(r < 8) SetMoveInDirection(r + 1, c);
             // Set SW moves.
-            if(r < 8 && c > 1)
-            {
-                s = Board.Squares[++r][--c];
-
-                if(s.HasPieceOn)
-                {
-                    if(s.PieceOnSquare.Color != Color)
-                    {
-                        captureMoves.Add(s);
-                        s.IsThreatened = true;
-                        s.ThreatenedBy = Color;
-                    }
-                    else
-                    {
-                        s.IsThreatened = true;
-                        s.ThreatenedBy = Color;
-                    }
-                }
-                else if(!s.IsThreatened || (s.IsThreatened && s.ThreatenedBy == Color))
-                {
-                    regularlMoves.Add(s);
-                }
-            }
-            ResetRowAndColumn(out r, out c, out s, R, C, S);
+            if(r < 8 && c > 1) SetMoveInDirection(r + 1, c - 1);
             // Set W moves.
-            if(c > 1)
-            {
-                s = Board.Squares[r][--c];
-
-                if(s.HasPieceOn)
-                {
-                    if(s.PieceOnSquare.Color != Color)
-                    {
-                        captureMoves.Add(s);
-                        s.IsThreatened = true;
-                        s.ThreatenedBy = Color;
-                    }
-                    else
-                    {
-                        s.IsThreatened = true;
-                        s.ThreatenedBy = Color;
-                    }
-                }
-                else if(!s.IsThreatened || (s.IsThreatened && s.ThreatenedBy == Color))
-                {
-                    regularlMoves.Add(s);
-                }
-            }
-            ResetRowAndColumn(out r, out c, out s, R, C, S);
+            if(c > 1) SetMoveInDirection(r, c - 1);
             // Set NW moves.
-            if(r > 1 && c > 1)
-            {
-                s = Board.Squares[--r][--c];
-
-                if(s.HasPieceOn)
-                {
-                    if(s.PieceOnSquare.Color != Color)
-                    {
-                        captureMoves.Add(s);
-                        s.IsThreatened = true;
-                        s.ThreatenedBy = Color;
-                    }
-                    else
-                    {
-                        s.IsThreatened = true;
-                        s.ThreatenedBy = Color;
-                    }
-                }
-                else if(!s.IsThreatened || (s.IsThreatened && s.ThreatenedBy == Color))
-                {
-                    regularlMoves.Add(s);
-                }
-            }
+            if(r > 1 && c > 1) SetMoveInDirection(r - 1, c - 1);
             // Set castle moves.
             if(!HasMoved)
             {
@@ -267,14 +82,12 @@ namespace Chess
                     if(!Board.Squares[Square.Row][Square.Col + 1].HasPieceOn)
                     {
                         if(!Board.Squares[Square.Row][Square.Col + 1].IsThreatened ||
-                            (Board.Squares[Square.Row][Square.Col + 1].IsThreatened &&
-                              Board.Squares[Square.Row][Square.Col + 1].ThreatenedBy == Color))
+                            Board.Squares[Square.Row][Square.Col + 1].ThreatenedBy.All(sq => sq.PieceOnSquare.Color == Color))
                         {
                             if(!Board.Squares[Square.Row][Square.Col + 2].HasPieceOn)
                             {
                                 if(!Board.Squares[Square.Row][Square.Col + 2].IsThreatened ||
-                                    (Board.Squares[Square.Row][Square.Col + 2].IsThreatened &&
-                                      Board.Squares[Square.Row][Square.Col + 2].ThreatenedBy == Color))
+                            Board.Squares[Square.Row][Square.Col + 2].ThreatenedBy.All(sq => sq.PieceOnSquare.Color == Color))
                                 {
 
                                     regularlMoves.Add(Board.Squares[Square.Row][Square.Col + 2]);
@@ -286,20 +99,17 @@ namespace Chess
                     if(!Board.Squares[Square.Row][Square.Col - 1].HasPieceOn)
                     {
                         if(!Board.Squares[Square.Row][Square.Col - 1].IsThreatened ||
-                            (Board.Squares[Square.Row][Square.Col - 1].IsThreatened &&
-                              Board.Squares[Square.Row][Square.Col - 1].ThreatenedBy == Color))
+                            Board.Squares[Square.Row][Square.Col - 1].ThreatenedBy.All(sq => sq.PieceOnSquare.Color == Color))
                         {
                             if(!Board.Squares[Square.Row][Square.Col - 2].HasPieceOn)
                             {
                                 if(!Board.Squares[Square.Row][Square.Col - 2].IsThreatened ||
-                                    (Board.Squares[Square.Row][Square.Col - 2].IsThreatened &&
-                                      Board.Squares[Square.Row][Square.Col - 2].ThreatenedBy == Color))
+                            Board.Squares[Square.Row][Square.Col - 2].ThreatenedBy.All(sq => sq.PieceOnSquare.Color == Color))
                                 {
                                     if(!Board.Squares[Square.Row][Square.Col - 3].HasPieceOn)
                                     {
                                         if(!Board.Squares[Square.Row][Square.Col - 3].IsThreatened ||
-                                            (Board.Squares[Square.Row][Square.Col - 3].IsThreatened &&
-                                              Board.Squares[Square.Row][Square.Col - 3].ThreatenedBy == Color))
+                            Board.Squares[Square.Row][Square.Col - 3].ThreatenedBy.All(sq => sq.PieceOnSquare.Color == Color))
                                         {
                                             regularlMoves.Add(Board.Squares[Square.Row][Square.Col - 3]);
                                         }
@@ -311,12 +121,40 @@ namespace Chess
                 }
             }
         }
-
-        private void ResetRowAndColumn(out int r, out int c, out Square s, int R, int C, Square S)
+        public void CheckIfMated()
         {
-            r = R;
-            c = C;
-            s = S;
+            if(Square.IsThreatened &&
+               Square.ThreatenedBy.Any(sq => sq.PieceOnSquare.Color == Color))
+            {
+                int movesCounter = regularlMoves.Count + captureMoves.Count;
+
+                foreach(Square s in regularlMoves)
+                    if(s.IsThreatened) movesCounter--;
+
+                foreach(Square s in captureMoves)
+                    if(s.IsThreatened) movesCounter--;
+
+                if(movesCounter == 0) Board.GameOver();
+            }
+        }
+
+        private void SetMoveInDirection(int r, int c)
+        {
+            // Target square.
+            Square s = Board.Squares[r][c];
+
+            // If target square is threatened by opponent don't add move.
+            if(s.IsThreatened &&
+               s.ThreatenedBy.Any(sq => sq.PieceOnSquare.Color != Color)) return;
+
+            if(s.HasPieceOn &&
+               s.PieceOnSquare.Color != Color)
+            {
+                captureMoves.Add(s);
+                s.IsThreatened = true;
+                s.ThreatenedBy.Add(Square);
+            }
+            else regularlMoves.Add(s);
         }
     }
 }

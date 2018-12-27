@@ -21,203 +21,49 @@ namespace Chess
             regularlMoves = new List<Square>();
             captureMoves = new List<Square>();
 
-            Square s, S;
-            int r, c, R, C;
-            r = R = Square.Row;
-            c = C = Square.Col;
-            S = Board.Squares[Square.Row][Square.Col];
+            int r = Square.Row;
+            int c = Square.Col;
 
             // Set N moves.
-            if(r > 1)
-            {
-                // Add empty squares
-                while(--r > 0)
-                {
-                    s = Board.Squares[r][c];
-
-                    if(s.HasPieceOn)
-                    {
-                        if(s.PieceOnSquare.Color != Color)
-                        {
-                            captureMoves.Add(s);
-                            s.IsThreatened = true;
-                            s.ThreatenedBy = Color;
-                        }
-                        break;
-                    }
-
-                    regularlMoves.Add(s);
-                }
-            }
+            if(r > 1) SetMoveInDirection(r, c, -1, 0, (x, y) => x > 0);
             // Set NE moves.
-            ResetRowAndColumn(out r, out c, out s, R, C, S);
-            if(c < 8 && r > 1)
-            {
-                // Add empty squares
-                while(++c < 9 && --r > 0)
-                {
-                    s = Board.Squares[r][c];
-
-                    if(s.HasPieceOn)
-                    {
-                        if(s.PieceOnSquare.Color != Color)
-                        {
-                            captureMoves.Add(s);
-                            s.IsThreatened = true;
-                            s.ThreatenedBy = Color;
-                        }
-                        break;
-                    }
-
-                    regularlMoves.Add(s);
-                }
-            }
+            if(c < 8 && r > 1) SetMoveInDirection(r, c, -1, 1, (x, y) => y < 9 && x > 0);
             // Set E moves.
-            ResetRowAndColumn(out r, out c, out s, R, C, S);
-            if(c < 8)
-            {
-                // Add empty squares
-                while(++c < 9)
-                {
-                    s = Board.Squares[r][c];
-
-                    if(s.HasPieceOn)
-                    {
-                        if(s.PieceOnSquare.Color != Color)
-                        {
-                            captureMoves.Add(s);
-                            s.IsThreatened = true;
-                            s.ThreatenedBy = Color;
-                        }
-                        break;
-                    }
-
-                    regularlMoves.Add(s);
-                }
-            }
+            if(c < 8) SetMoveInDirection(r, c, 0, 1, (x, y) => y < 9);
             // Set SE moves.
-            ResetRowAndColumn(out r, out c, out s, R, C, S);
-            if(c < 8 && r < 8)
-            {
-                // Add empty squares
-                while(++c < 9 && ++r < 9)
-                {
-                    s = Board.Squares[r][c];
-
-                    if(s.HasPieceOn)
-                    {
-                        if(s.PieceOnSquare.Color != Color)
-                        {
-                            captureMoves.Add(s);
-                            s.IsThreatened = true;
-                            s.ThreatenedBy = Color;
-                        }
-                        break;
-                    }
-
-                    regularlMoves.Add(s);
-                }
-            }
+            if(c < 8 && r < 8) SetMoveInDirection(r, c, 1, 1, (x, y) => x < 9 && y < 9);
             // Set S moves.
-            ResetRowAndColumn(out r, out c, out s, R, C, S);
-            if(r < 8)
-            {
-                s = S;
-
-                // Add empty squares
-                while(++r < 9)
-                {
-                    s = Board.Squares[r][c];
-
-                    if(s.HasPieceOn)
-                    {
-                        if(s.PieceOnSquare.Color != Color)
-                        {
-                            captureMoves.Add(s);
-                            s.IsThreatened = true;
-                            s.ThreatenedBy = Color;
-                        }
-                        break;
-                    }
-
-                    regularlMoves.Add(s);
-                }
-            }
+            if(r < 8) SetMoveInDirection(r, c, 1, 0, (x, y) => x < 9);
             // Set SW moves.
-            ResetRowAndColumn(out r, out c, out s, R, C, S);
-            if(c > 0 && r < 8)
-            {
-                // Add empty squares
-                while(--c > 0 && ++r < 9)
-                {
-                    s = Board.Squares[r][c];
-
-                    if(s.HasPieceOn)
-                    {
-                        if(s.PieceOnSquare.Color != Color)
-                        {
-                            captureMoves.Add(s);
-                            s.IsThreatened = true;
-                            s.ThreatenedBy = Color;
-                        }
-                        break;
-                    }
-
-                    regularlMoves.Add(s);
-                }
-            }
+            if(c > 0 && r < 8) SetMoveInDirection(r, c, 1, -1, (x, y) => x < 9 && y > 0);
             // Set W moves.
-            ResetRowAndColumn(out r, out c, out s, R, C, S);
-            if(c > 1)
-            {
-                // Add empty squares
-                while(--c > 0)
-                {
-                    s = Board.Squares[r][c];
-
-                    if(s.HasPieceOn)
-                    {
-                        if(s.PieceOnSquare.Color != Color)
-                        {
-                            captureMoves.Add(s);
-                            s.IsThreatened = true;
-                            s.ThreatenedBy = Color;
-                        }
-                        break;
-                    }
-
-                    regularlMoves.Add(s);
-                }
-            }
+            if(c > 1) SetMoveInDirection(r, c, 0, -1, (x, y) => y > 0);
             // Set NW moves.
-            ResetRowAndColumn(out r, out c, out s, R, C, S);
-            if(c > 1 && r > 1)
-            {
-                // Add empty squares
-                while(--c > 0 && --r > 0)
-                {
-                    s = Board.Squares[r][c];
-
-                    if(s.HasPieceOn)
-                    {
-                        if(s.PieceOnSquare.Color != Color)
-                        {
-                            captureMoves.Add(s);
-                            s.IsThreatened = true;
-                            s.ThreatenedBy = Color;
-                        }
-                        break;
-                    }
-
-                    regularlMoves.Add(s);
-                }
-            }
+            if(c > 1 && r > 1) SetMoveInDirection(r, c, -1, -1, (x, y) => x > 0 && y > 0);
         }
-        private static void ResetRowAndColumn(out int r, out int c, out Square s, int R, int C, Square S)
+
+        private void SetMoveInDirection(int r, int c, int factorR, int factorC, Func<int, int, bool> whileCheck)
         {
-            r = R;
-            c = C;
-            s = S;
+            // Add empty squares.
+            // If a square has a piece of opposite color add it to noves and return.
+            while(whileCheck(r, c))
+            {
+                Square s = Board.Squares[r][c];
+
+                if(s.HasPieceOn &&
+                   s.PieceOnSquare.Color != Color)
+                {
+                    captureMoves.Add(s);
+                    s.IsThreatened = true;
+                    s.ThreatenedBy.Add(Square);
+
+                    return;
+                }
+
+                regularlMoves.Add(s);
+                r += factorR;
+                c += factorC;
+            }
         }
     }
 }

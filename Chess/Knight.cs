@@ -20,7 +20,7 @@ namespace Chess
             regularlMoves = new List<Square>();
             captureMoves = new List<Square>();
 
-            List<Square> S = new List<Square>();
+            List<Square> filterList = new List<Square>();
             int r = Square.Row;
             int c = Square.Col;
 
@@ -29,56 +29,56 @@ namespace Chess
             //   ^
             if(Square.Row - 2 > 0 && Square.Col - 1 > 0)
             {
-                AddSquareToList(S, -2, -1);
+                AddSquareToList(filterList, -2, -1);
             }
-            //   > x
-            //   ^
-            //   ^
+            // > x
+            // ^
+            // ^
             if(Square.Row - 2 > 0 && Square.Col + 1 < 9)
             {
-                AddSquareToList(S, -2, 1);
+                AddSquareToList(filterList, -2, 1);
             }
             // x
             // ^ < <
             if(Square.Row - 1 > 0 && Square.Col - 2 > 0)
             {
-                AddSquareToList(S, -1, -2);
+                AddSquareToList(filterList, -1, -2);
             }
             // v < <
             // x
             if(Square.Row + 1 < 9 && Square.Col - 2 > 0)
             {
-                AddSquareToList(S, 1, -2);
+                AddSquareToList(filterList, 1, -2);
             }
             //   v
             //   v
             // x <
             if(Square.Row + 2 < 9 && Square.Col - 1 > 0)
             {
-                AddSquareToList(S, 2, -1);
+                AddSquareToList(filterList, 2, -1);
             }
-            //   v
-            //   v
-            //   > x
+            //  v
+            //  v
+            //  > x
             if(Square.Row + 2 < 9 && Square.Col + 1 < 9)
             {
-                AddSquareToList(S, 2, 1);
+                AddSquareToList(filterList, 2, 1);
             }
             //     x
             // > > ^
             if(Square.Row - 1 > 0 && Square.Col + 2 < 9)
             {
-                AddSquareToList(S, -1, 2);
+                AddSquareToList(filterList, -1, 2);
             }
             // > > v
             //     x
             if(Square.Row + 1 < 9 && Square.Col + 2 < 9)
             {
-                AddSquareToList(S, 1, 2);
+                AddSquareToList(filterList, 1, 2);
             }
         }
 
-        private void AddSquareToList(List<Square> S, int r, int c)
+        private void AddSquareToList(List<Square> filterList, int r, int c)
         {
             Square s = Board.Squares[Square.Row + r][Square.Col + c];
 
@@ -88,7 +88,7 @@ namespace Chess
                 {
                     captureMoves.Add(s);
                     s.IsThreatened = true;
-                    s.ThreatenedBy = Color;
+                    s.ThreatenedBy.Add(Square);
                 }
             }
             else

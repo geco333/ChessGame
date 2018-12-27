@@ -58,13 +58,13 @@ namespace Chess
             {
                 captureMoves.Add(Board.Squares[Square.Row + colorFactor][Square.Col - 1]);
                 Board.Squares[Square.Row + colorFactor][Square.Col - 1].IsThreatened = true;
-                Board.Squares[Square.Row + colorFactor][Square.Col - 1].ThreatenedBy = Color;
+                Board.Squares[Square.Row + colorFactor][Square.Col - 1].ThreatenedBy.Add(Square);
             }
             if(Square.Col < 8)
             {
                 captureMoves.Add(Board.Squares[Square.Row + colorFactor][Square.Col + 1]);
                 Board.Squares[Square.Row + colorFactor][Square.Col + 1].IsThreatened = true;
-                Board.Squares[Square.Row + colorFactor][Square.Col + 1].ThreatenedBy = Color;
+                Board.Squares[Square.Row + colorFactor][Square.Col + 1].ThreatenedBy.Add(Square);
             }
         }
     }

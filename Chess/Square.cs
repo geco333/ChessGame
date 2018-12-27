@@ -9,7 +9,7 @@ namespace Chess
         public int Col { get; }
         public int Row { get; }
         public bool IsThreatened;
-        public string ThreatenedBy;
+        public List<Square> ThreatenedBy;
 
         public Square(int row, int col)
         {
@@ -17,6 +17,7 @@ namespace Chess
             Row = row;
             HasPieceOn = false;
             IsThreatened = false;
+            ThreatenedBy = new List<Square>();
         }
     }
 }

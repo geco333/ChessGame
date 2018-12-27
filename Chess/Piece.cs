@@ -14,6 +14,8 @@ namespace Chess
         public string Color { get; }
         public Square Square { get; private set; }
 
+        public abstract void updateLeagelMoves();
+
         public Piece(Square square, string color)
         {
             Square = square;
@@ -21,8 +23,6 @@ namespace Chess
 
             MouseDown += ClickOnPiece;
         }
-        public abstract void updateLeagelMoves();
-
         public bool IsMoveLeagel(Square from, Square to)
         {
             // Checks if to square is in the pieces moves lists.
@@ -73,6 +73,7 @@ namespace Chess
 
             Square = to;
             Board.UpdateMovesAndThreats();
+            Board.CheckIfKingIsChecked();
         }
         public void ClickOnPiece(object sender, RoutedEventArgs e)
         {
